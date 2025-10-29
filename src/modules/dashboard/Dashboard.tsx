@@ -38,8 +38,7 @@ export const Dashboard = () => {
     setDeleteOpen(true);
   };
 
-  // Todo: Add loading state
-  if (isDashboardsLoading) return <div>Loading dashboard...</div>;
+  if (isDashboardsLoading) return <div className="p-4 text-primary border-b border-gray-200">Loading dashboards...</div>;
 
   return (
     <div>
