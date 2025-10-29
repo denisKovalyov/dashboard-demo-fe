@@ -1,7 +1,8 @@
 export const API_URL = import.meta.env.VITE_API_URL;
+const isDev = import.meta.env.DEV;
 
 export async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_URL}${endpoint}`, {
+  const res = await fetch(`${API_URL}${isDev ?'/api' : ''}${endpoint}`, {
     headers: {
       ...(options?.method !== 'DELETE' && { 'Content-Type': 'application/json' }),
     },
