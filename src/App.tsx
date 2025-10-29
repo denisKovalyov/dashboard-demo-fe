@@ -2,9 +2,7 @@ import './index.css';
 import { Dashboard } from './modules/dashboard/Dashboard.tsx';
 
 function App() {
-  return (
-    <Dashboard />
-  );
+  return <Dashboard />;
 }
 
 export default App;

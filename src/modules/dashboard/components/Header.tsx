@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface HeaderProps {
   title: string;
@@ -6,8 +6,8 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
-    <header className="w-full bg-primary text-primary-foreground border-b border-border p-6">
-      <h1 className="text-3xl font-bold">{title}</h1>
+    <header className="border-b border-gray-200 p-4">
+      <h1 className="text-primary text-xl font-semibold">{title}</h1>
     </header>
   );
 };
