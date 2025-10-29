@@ -25,7 +25,7 @@ export const Dashboard = () => {
   const defaultDashboard = dashboards?.[0];
   const dashboardId = defaultDashboard?.id;
 
-  const { data: widgets, isLoading: isWidgetsLoading } = useWidgets(dashboardId);
+  const { data: widgets, isLoading: isWidgetsLoading, isFetching: isWidgetsFetching } = useWidgets(dashboardId);
 
   const handleEditClick = (widgetId: number, currentText: string) => {
     setEditingWidgetId(widgetId);
@@ -61,6 +61,7 @@ export const Dashboard = () => {
                   <TextCard
                     key={widget.id}
                     text={widget.data as string}
+                    isLoading={isWidgetsFetching}
                     onEdit={() => handleEditClick(widget.id, widget.data as string)}
                     onRemove={() => openDelete(widget.id)}
                   />

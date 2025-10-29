@@ -4,16 +4,26 @@ import { ArticleNyTimes } from '@phosphor-icons/react';
 
 interface TextCardProps {
   text: string;
+  isLoading?: boolean;
   onEdit: () => void;
   onRemove: () => void;
 }
 
-export const TextCard = ({ text, onEdit, onRemove }: TextCardProps) => {
+export const TextCard = ({ text, onEdit, onRemove, isLoading }: TextCardProps) => {
   if (!text) {
     return (
       <Card className="relative min-h-[346px] flex flex-col items-center justify-center">
         <ArticleNyTimes size={140} weight="fill" className="text-primary/40" />
         <p className="text-muted-foreground mt-2">No data found</p>
+      </Card>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <Card className="relative min-h-[346px] flex flex-col items-center justify-center">
+        <ArticleNyTimes size={140} weight="fill" className="text-primary/40 animate-pulse-color" />
+        <p className="text-muted-foreground mt-2">Updating data...</p>
       </Card>
     );
   }
