@@ -44,19 +44,14 @@ export const ChartCard = ({
   config,
   onRemove,
   type = 'lineChart',
-  loading = false,
 }: ChartCardProps) => {
   const hasData = data && data.length > 0;
 
-  if (loading || !hasData) {
+  if (!hasData) {
     return (
       <Card className="relative min-h-[346px] flex flex-col items-center justify-center">
-        <PresentationChart
-          size={140}
-          weight="fill"
-          className="text-primary/40 animate-pulse-color"
-        />
-        <p className="text-muted-foreground mt-2">Waiting for data...</p>
+        <PresentationChart size={140} weight="fill" className="text-primary/40" />
+        <p className="text-muted-foreground mt-2">No data found</p>
       </Card>
     );
   }

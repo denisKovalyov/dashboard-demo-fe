@@ -9,6 +9,7 @@ import { TextCard } from '@/modules/dashboard/components/TextCard.tsx';
 import { AddWidgetModal } from '@/modules/dashboard/components/AddWidgetModal.tsx';
 import { EditTextModal } from '@/modules/dashboard/components/EditTextModal.tsx';
 import { DeleteWidgetModal } from '@/modules/dashboard/components/DeleteWidgetModal.tsx';
+import { LoadingCard } from '@/modules/dashboard/components/LoadingCard.tsx';
 
 export const Dashboard = () => {
   const [addOpen, setAddOpen] = useState(false);
@@ -20,10 +21,11 @@ export const Dashboard = () => {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteWidgetId, setDeleteWidgetId] = useState<number | null>(null);
 
-  const { data: dashboards, isLoading: dashboardLoading, error: dashboardErr } = useDashboard();
-  const dashboardId = dashboards?.[0]?.id;
+  const { data: dashboards, isLoading: isDashboardsLoading, error: dashboardErr } = useDashboard();
+  const defaultDashboard = dashboards?.[0];
+  const dashboardId = defaultDashboard?.id;
 
-  const { data: widgets } = useWidgets(dashboardId);
+  const { data: widgets, isLoading: isWidgetsLoading } = useWidgets(dashboardId);
 
   const handleEditClick = (widgetId: number, currentText: string) => {
     setEditingWidgetId(widgetId);
@@ -37,44 +39,50 @@ export const Dashboard = () => {
   };
 
   // Todo: Add loading state
-  if (dashboardLoading) return <div>Loading dashboard...</div>;
+  if (isDashboardsLoading) return <div>Loading dashboard...</div>;
 
   return (
     <div>
       {dashboardErr ? (
         <p className="border-b border-red-400 p-4 text-red-500">Error on dashboard loading</p>
       ) : (
-        <Header title={dashboards?.[0]?.name || 'Dashboard'} />
+        <Header title={defaultDashboard?.name || 'Dashboard'} />
       )}
 
       <section className="p-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {widgets?.map((widget) => {
-          if (widget.type === 'text') {
-            return (
-              <TextCard
-                key={widget.id}
-                text={widget.data as string}
-                onEdit={() => handleEditClick(widget.id, widget.data as string)}
-                onRemove={() => openDelete(widget.id)}
-              />
-            );
-          }
+        {isWidgetsLoading && defaultDashboard ? (
+          Array.from({ length: defaultDashboard.widgetCount }, (_, i) => <LoadingCard key={i} />)
+        ) : (
+          <>
+            {widgets?.map((widget) => {
+              if (widget.type === 'text') {
+                return (
+                  <TextCard
+                    key={widget.id}
+                    text={widget.data as string}
+                    onEdit={() => handleEditClick(widget.id, widget.data as string)}
+                    onRemove={() => openDelete(widget.id)}
+                  />
+                );
+              }
 
-          const { chartData, chartConfig, title, description } = adaptChartData(widget);
-          return (
-            <ChartCard
-              key={widget.id}
-              title={title}
-              description={description}
-              data={chartData}
-              config={chartConfig}
-              type={widget.type}
-              onRemove={() => openDelete(widget.id)}
-            />
-          );
-        })}
+              const { chartData, chartConfig, title, description } = adaptChartData(widget);
+              return (
+                <ChartCard
+                  key={widget.id}
+                  title={title}
+                  description={description}
+                  data={chartData}
+                  config={chartConfig}
+                  type={widget.type}
+                  onRemove={() => openDelete(widget.id)}
+                />
+              );
+            })}
 
-        <EmptyCard onClick={() => setAddOpen(true)} />
+            <EmptyCard onClick={() => setAddOpen(true)} />
+          </>
+        )}
       </section>
 
       {addOpen && dashboardId && (
