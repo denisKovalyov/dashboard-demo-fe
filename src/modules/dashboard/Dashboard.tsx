@@ -38,6 +38,8 @@ export const Dashboard = () => {
     setDeleteOpen(true);
   };
 
+  const maxPosition = widgets?.reduce((max, w) => Math.max(max, w.position), 0) ?? 1;
+
   if (isDashboardsLoading) return <div className="p-4 text-primary border-b border-gray-200">Loading dashboards...</div>;
 
   return (
@@ -89,7 +91,7 @@ export const Dashboard = () => {
           open={addOpen}
           onOpenChange={setAddOpen}
           dashboardId={dashboardId}
-          position={(widgets?.length || 0) + 1}
+          position={maxPosition + 1}
         />
       )}
 
