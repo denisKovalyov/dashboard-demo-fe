@@ -23,6 +23,7 @@ type ChartCardProps = {
   data: any[];
   config: Record<string, { label: string }>; // no color needed
   type: WidgetType;
+  onRemove: () => void;
   loading?: boolean;
 };
 
@@ -41,6 +42,7 @@ export const ChartCard = ({
   description,
   data,
   config,
+  onRemove,
   type = 'lineChart',
   loading = false,
 }: ChartCardProps) => {
@@ -64,7 +66,7 @@ export const ChartCard = ({
   return (
     <Card className="relative min-h-[346px] group">
       <div className="absolute top-2 right-2 opacity-70 group-hover:opacity-100 transition-opacity">
-        <Dropdown onRemove={() => alert('remove')} />
+        <Dropdown onRemove={onRemove} />
       </div>
 
       <CardHeader>

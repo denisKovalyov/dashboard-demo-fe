@@ -11,3 +11,9 @@ export interface Widget {
   position: number;
   data: string | ChartData;
 }
+
+export interface Dashboard {
+  id: number;
+  name: string;
+  created_at: string;
+}
